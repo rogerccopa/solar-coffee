@@ -19,7 +19,7 @@ namespace SolarCoffee.Services.Order
 
         public OrderService(
             SolarDbContext dbContext,
-            ILogger logger,
+            ILogger<OrderService> logger,
             IProductService productService,
             IInventoryService inventoryService)
         {

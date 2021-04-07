@@ -14,7 +14,8 @@ namespace SolarCoffee.Web.Controllers
         // program to the Abstraction not to the Implementation
         private readonly IProductService _productService;
 
-        public ProductController(ILogger<ProductController> logger,
+        public ProductController(
+            ILogger<ProductController> logger,
             IProductService productService)
         {
             _logger = logger;
@@ -27,7 +28,16 @@ namespace SolarCoffee.Web.Controllers
             _logger.LogInformation("Getting all products");
             var products = _productService.GetAllProducts();
             var productViewModels = products.Select(ProductMapper.SerializeProductModel);
-            return Ok(products);
+            return Ok(productViewModels);
+        }
+
+        [HttpPatch("api/product/{productId}")]
+        public ActionResult ArchiveProduct(int productId)
+        {
+            _logger.LogInformation($"Archiving product {productId}");
+            var archiveResult = _productService.ArchiveProduct(productId);
+
+            return Ok(archiveResult);
         }
     }
 }
