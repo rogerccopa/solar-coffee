@@ -1,13 +1,40 @@
 <template>
   <div class="side-menu-container">
-    <img
-      id="imgLogo"
-      alt="Solar Coffee logo"
-      src="../assets/images/solar_coffee_logo.png"
-    />
+    <router-link to="/">
+      <img
+        id="imgLogo"
+        alt="Solar Coffee logo"
+        src="../assets/images/solar_coffee_logo.png"
+      />
+    </router-link>
     <h1>Management Portal</h1>
-    <solar-button id="menuInventory" :link="'/inventory'">
+    <solar-button
+      id="menuInventory"
+      @button:click="gotoRoute('/inventory')"
+      isFullWidth
+    >
       Inventory
+    </solar-button>
+    <solar-button
+      id="menuCustomers"
+      @button:click="gotoRoute('/customers')"
+      isFullWidth
+    >
+      Manage Customers
+    </solar-button>
+    <solar-button
+      id="menuInvoice"
+      @button:click="gotoRoute('/invoice/new')"
+      isFullWidth
+    >
+      New Invoice
+    </solar-button>
+    <solar-button
+      id="menuOrders"
+      @button:click="gotoRoute('/orders')"
+      isFullWidth
+    >
+      Orders
     </solar-button>
   </div>
 </template>
@@ -20,7 +47,11 @@ import SolarButton from "@/components/SolarButton.vue";
   name: "SideMenu",
   components: { SolarButton },
 })
-export default class SideMenu extends Vue {}
+export default class SideMenu extends Vue {
+  gotoRoute(route: string) {
+    this.$router.push(route);
+  }
+}
 </script>
 
 <style scoped lang="scss">
