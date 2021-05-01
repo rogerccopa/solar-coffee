@@ -1,3 +1,4 @@
+import moment from "moment";
 import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
@@ -11,6 +12,10 @@ Vue.filter('pricefilter', function (n: number) {
   }
 
   return '$ ' + n.toFixed(2);
+});
+
+Vue.filter('humanizeDate', function (dt: Date) {
+  return moment(dt).format("MMMM Do YYYY");
 });
 
 new Vue({
