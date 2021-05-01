@@ -16,6 +16,8 @@ namespace SolarCoffee.Web
     {
         public IConfiguration Configuration { get; }
 
+        private readonly string myCorsPolicyName = "myCorsPolicy";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -24,11 +26,22 @@ namespace SolarCoffee.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // define our CORS (client request is from a different domain/protocol)
+            services.AddCors(options =>
+            {
+                options.AddPolicy(myCorsPolicyName, builder =>
+                    builder
+                        .WithOrigins("http://localhost:8080")
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials());
+            });
 
             services.AddControllers();
 
             services.AddDbContext<SolarDbContext>(
-                opts => {
+                opts =>
+                {
                     opts.EnableDetailedErrors();
                     opts.UseNpgsql(Configuration.GetConnectionString("solar.dev"));
                 });
@@ -50,6 +63,9 @@ namespace SolarCoffee.Web
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            // apply our CORS
+            app.UseCors(myCorsPolicyName);
 
             app.UseAuthorization();
 

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SolarCoffee.Services.Product;
 using SolarCoffee.Web.Serialization;
+using SolarCoffee.Web.ViewModels;
 
 namespace SolarCoffee.Web.Controllers
 {
@@ -38,6 +39,21 @@ namespace SolarCoffee.Web.Controllers
             var archiveResult = _productService.ArchiveProduct(productId);
 
             return Ok(archiveResult);
+        }
+
+        [HttpPost("api/product")]
+        public ActionResult AddProduct([FromBody] ProductModel newProduct)
+        {
+            // check if .NET binded successfully client request fields to our ProductModel
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            _logger.LogInformation("Saving new product");
+            var newProductDataModel = ProductMapper.SerializeProductModel(newProduct);
+            var newProductResponse = _productService.CreateProduct(newProductDataModel);
+            return Ok(newProductResponse.Data);
         }
     }
 }

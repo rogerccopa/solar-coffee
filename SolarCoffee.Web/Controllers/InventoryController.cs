@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SolarCoffee.Services.Inventory;
@@ -25,7 +24,7 @@ namespace SolarCoffee.Web.Controllers
         [HttpGet("api/inventory")]
         public ActionResult GenCurrentInventory()
         {
-            _logger.LogInformation("Getting all inventory");
+            _logger.LogInformation("Getting all inventory...");
 
             var inventory = _inventoryService.GetCurrentInventory();
             var inventoryModel = inventory
@@ -44,6 +43,12 @@ namespace SolarCoffee.Web.Controllers
         [HttpPatch("api/inventory")]
         public ActionResult UpdateInventory([FromBody] ShipmentModel shipment)
         {
+            // check if .NET binded successfully client request fields to our ProductModel
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             _logger.LogInformation(
                 $"Updating inventory " +
                 $"for {shipment.ProductId} " +

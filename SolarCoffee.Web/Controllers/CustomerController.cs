@@ -23,6 +23,12 @@ namespace SolarCoffee.Web.Controllers
         [HttpPost("api/customer")]
         public ActionResult CreateCustomer([FromBody] CustomerModel customer)
         {
+            // check if .NET binded successfully client request fields to our ProductModel
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             _logger.LogInformation("Creating a new Customer");
             customer.CreatedOn = DateTime.UtcNow;
             customer.UpdatedOn = DateTime.UtcNow;
