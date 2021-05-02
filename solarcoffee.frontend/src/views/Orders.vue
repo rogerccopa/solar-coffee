@@ -23,7 +23,7 @@
           <td>
             <div
               v-if="!order.isPaid"
-              class="lni-check-mark-circle order-complete"
+              class="lni lni-checkmark-circle order-complete green"
               @click="markComplete(order.id)"
             ></div>
           </td>
@@ -62,6 +62,8 @@ export default class Orders extends Vue {
 
   async initialize() {
     this.orders = await orderService.getOrders();
+    console.log(this.orders);
+    console.log(this.orders.length);
   }
   async created() {
     this.initialize();
@@ -70,7 +72,16 @@ export default class Orders extends Vue {
 </script>
 
 <style scoped lang="scss">
-table {
-  color: #fff;
+@import "@/scss/global.scss";
+
+.green {
+  font-weight: bold;
+  color: $solar-green;
+}
+
+.order-complete {
+  width: 50%;
+  cursor: pointer;
+  text-align: center;
 }
 </style>
