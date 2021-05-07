@@ -62,8 +62,6 @@ export default class Orders extends Vue {
 
   async initialize() {
     this.orders = await orderService.getOrders();
-    console.log(this.orders);
-    console.log(this.orders.length);
   }
   async created() {
     this.initialize();

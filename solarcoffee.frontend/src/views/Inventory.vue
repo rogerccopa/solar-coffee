@@ -2,6 +2,9 @@
   <div class="inventory-container">
     <h1 id="inventoryTitle">Inventory Dashboard</h1>
     <hr />
+
+    <inventory-chart />
+
     <div class="inventory-actions">
       <solar-button @button:click="showNewProductModal" id="addNewBtn">
         Add New Item
@@ -69,13 +72,14 @@ import NewProductModal from "@/components/modals/NewProductModal.vue";
 import ShipmentModal from "@/components/modals/ShipmentModal.vue";
 import { InventoryService } from "@/services/inventory-service";
 import { ProductService } from "@/services/product-service";
+import InventoryChart from "@/components/charts/InventoryChart.vue";
 
 const inventoryService = new InventoryService();
 const productService = new ProductService();
 
 @Component({
   name: "Inventory",
-  components: { SolarButton, NewProductModal, ShipmentModal },
+  components: { SolarButton, NewProductModal, ShipmentModal, InventoryChart },
 })
 export default class Inventory extends Vue {
   isNewProductVisible = false;
@@ -126,6 +130,7 @@ export default class Inventory extends Vue {
 
   async initialize() {
     this.inventory = await inventoryService.getInventory();
+    this.$store.dispatch("assignSnapshots");
   }
 
   // component's life-cycle method

@@ -79,7 +79,7 @@ namespace SolarCoffee.Web.Controllers
 
                 // get distinct points in time a snapshot was collected
                 var timelineMarkers = snapshotHistory
-                    .Select(tl => tl.SnapshotTime)
+                    .Select(hist => hist.SnapshotTime)
                     .Distinct()
                     .ToList();
 
@@ -101,6 +101,8 @@ namespace SolarCoffee.Web.Controllers
                     Timeline = timelineMarkers,
                     ProductInventorySnapshots = snapshots
                 };
+
+                return Ok(viewModel);
             }
             catch (System.Exception ex)
             {

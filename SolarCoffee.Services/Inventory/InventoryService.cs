@@ -49,7 +49,7 @@ namespace SolarCoffee.Services.Inventory
         /// <returns></returns>
         List<ProductInventorySnapshot> IInventoryService.GetSnapshotHistory()
         {
-            var earliest = DateTime.UtcNow - TimeSpan.FromHours(6);
+            var earliest = DateTime.UtcNow - TimeSpan.FromHours(24 * 30);
 
             return _db.ProductInventorySnapshots
                 .Include(snap => snap.Product)
