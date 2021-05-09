@@ -79,7 +79,7 @@ namespace SolarCoffee.Services.Inventory
                 // use try-catch so it doesn't interrupt the inventory update.
                 try
                 {
-                    CreateSnapshot(inventory);
+                    CreateSnapshot();
                 }
                 catch (Exception ex)
                 {
@@ -113,10 +113,12 @@ namespace SolarCoffee.Services.Inventory
         /// Creates a Snapshot record using the provided ProductInventory instance
         /// </summary>
         /// <param name="inventory"></param>
-        private void CreateSnapshot(ProductInventory inventory)
+        //private void CreateSnapshot(ProductInventory inventory) // OLD VERSION
+        private void CreateSnapshot()
         {
             var now = DateTime.UtcNow;
 
+            /* OLD VERSION
             var snapshot = new ProductInventorySnapshot
             {
                 Product = inventory.Product,
@@ -126,6 +128,24 @@ namespace SolarCoffee.Services.Inventory
 
             // Entity framework will infer type of 'snapshot' & its respective table
             _db.Add(snapshot);
+            */
+
+            // NEW VERSION
+            var inventories = _db.ProductInventories
+                .Include(inv => inv.Product)
+                .ToList();
+
+            foreach (var inventory in inventories)
+            {
+                var snapshot = new ProductInventorySnapshot
+                {
+                    SnapshotTime = now,
+                    Product = inventory.Product,
+                    QuantityOnHand = inventory.QuantityOnHand
+                };
+
+                _db.Add(snapshot);
+            }
         }
     }
 }

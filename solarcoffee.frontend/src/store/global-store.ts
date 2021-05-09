@@ -18,14 +18,10 @@ const actions = {
         const inventoryService = new InventoryService();
         const resp = await inventoryService.getSnapshotHistory();
 
-        console.log(":: assignSnapshots ::", resp);
-
         const timeline: IInventoryTimeline = {
             productInventorySnapshots: resp.productInventorySnapshots,
             timeline: resp.timeline
         };
-
-        console.log(":: assignSnapshots :: timeline: ", timeline);
 
         commit("SET_SNAPSHOT_TIMELINE", timeline);
         commit("SET_IS_TIMELINE_BUILT", true);

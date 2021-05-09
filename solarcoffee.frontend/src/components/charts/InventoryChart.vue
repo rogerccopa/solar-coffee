@@ -17,6 +17,7 @@ import { Sync, Get } from "vuex-pathify";
 
 // noinspection TypeScriptCheckImport
 import VueApexChart from "vue-apexcharts";
+import moment from "moment";
 Vue.component("apexchart", VueApexChart);
 
 @Component({
@@ -37,6 +38,9 @@ export default class InventoryChart extends Vue {
       stroke: { curve: "smooth" },
       xaxis: {
         categories: this.snapshotTimeline.timeline,
+        // categories: this.snapshotTimeline.timeline.map((t) =>
+        //   moment(t).format("dd HHMMss")
+        // ),
         type: "datetime",
       },
     };
